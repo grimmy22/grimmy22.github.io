@@ -552,12 +552,46 @@
       return exps.map(v => v/sum); // softmax, for display only
     }
 
-    function sampleInput(){
+    // Finds the drawn ink's bounding box at full canvas resolution, then scales and
+    // centers it into a 28x28 frame with the digit filling roughly a 20x20 box —
+    // matching the centered, normalized convention real MNIST images are built with.
+    // Without this step the network sees off-center, arbitrarily-scaled strokes it
+    // never trained on, which tanks accuracy independent of the model itself.
+    function extractDigit28(){
+      const full = ctx.getImageData(0, 0, W, H).data;
+      let minX = W, maxX = -1, minY = H, maxY = -1;
+      for(let y=0;y<H;y++){
+        for(let x=0;x<W;x++){
+          const idx = (y*W+x)*4;
+          const lum = (full[idx]+full[idx+1]+full[idx+2])/3;
+          if(255 - lum > 20){ // ink threshold
+            if(x<minX) minX=x;
+            if(x>maxX) maxX=x;
+            if(y<minY) minY=y;
+            if(y>maxY) maxY=y;
+          }
+        }
+      }
       const off = document.createElement('canvas');
       off.width = 28; off.height = 28;
       const octx = off.getContext('2d');
-      octx.drawImage(canvas, 0, 0, W, H, 0, 0, 28, 28);
-      const data = octx.getImageData(0,0,28,28).data;
+      octx.fillStyle = '#f7f8f4';
+      octx.fillRect(0,0,28,28);
+      if(maxX >= minX && maxY >= minY){
+        const bw = maxX-minX+1, bh = maxY-minY+1;
+        const side = Math.max(bw, bh) * 1.3; // small margin around the stroke
+        const scale = 20/side; // fit into a 20x20 box, MNIST-style
+        const destW = bw*scale, destH = bh*scale;
+        const destX = (28-destW)/2, destY = (28-destH)/2;
+        octx.drawImage(canvas, minX, minY, bw, bh, destX, destY, destW, destH);
+      } else {
+        octx.drawImage(canvas, 0, 0, W, H, 0, 0, 28, 28); // blank — nothing to center
+      }
+      return octx.getImageData(0,0,28,28).data;
+    }
+
+    function sampleInput(){
+      const data = extractDigit28();
       const x = new Float32Array(784);
       for(let p=0;p<784;p++){
         const r = data[p*4], g = data[p*4+1], b = data[p*4+2];
