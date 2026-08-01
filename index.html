@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jaivardhan Singh Chauhan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Newsreader:ital,opsz,wght@1,6..72,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #e7e9e1;
+    --paper-raised: #eef0e8;
+    --ink: #161f1c;
+    --ink-dim: #626f66;
+    --ink-faint: #8b9690;
+    --line: #c3c9bc;
+    --signal: #2f7a6b;
+    --alert: #a8562a;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  body{
+    background:var(--paper);
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 100% 42px, 42px 100%;
+    background-attachment: local;
+    background-position: 0 0, 0 0;
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:16px;
+    line-height:1.65;
+  }
+  /* faint grid only behind content, not full-bleed noise */
+  body{ background-image:none; }
+  ::selection{ background:var(--signal); color:var(--paper); }
+  a{ color:var(--ink); text-decoration:none; border-bottom:1px solid var(--ink-faint); }
+  a:hover{ color:var(--signal); border-color:var(--signal); }
+
+  .wrap{ max-width:900px; margin:0 auto; padding:0 28px; }
+
+  /* ---------- masthead ---------- */
+  .masthead{
+    padding:56px 0 40px;
+    border-bottom:1.5px solid var(--ink);
+  }
+  .masthead .file-tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--ink-dim);
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:22px;
+  }
+  .masthead h1{
+    font-family:'Newsreader', serif;
+    font-weight:500;
+    font-size:clamp(38px,6vw,58px);
+    letter-spacing:-.01em;
+    line-height:1.02;
+  }
+  .masthead .sub{
+    font-family:'Newsreader', serif;
+    font-style:italic;
+    font-weight:400;
+    font-size:19px;
+    color:var(--ink-dim);
+    margin-top:4px;
+  }
+  .contact-row{
+    margin-top:22px;
+    display:flex; flex-wrap:wrap; gap:4px 22px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    color:var(--ink-dim);
+  }
+  .contact-row a{ border-bottom:none; color:var(--ink-dim); }
+  .contact-row a:hover{ color:var(--signal); }
+
+  /* ---------- generic section scaffolding: datasheet card ---------- */
+  section{ padding:46px 0; border-bottom:1px solid var(--line); position:relative; }
+  section:last-of-type{ border-bottom:none; }
+
+  .ref{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:.06em;
+    color:var(--signal);
+    margin-bottom:8px;
+    display:block;
+  }
+  .ref .unit{ color:var(--ink-faint); }
+
+  h2{
+    font-family:'Newsreader', serif;
+    font-weight:500;
+    font-size:clamp(24px,3.6vw,32px);
+    letter-spacing:-.005em;
+    margin-bottom:14px;
+  }
+  .lede{ color:var(--ink-dim); max-width:640px; font-size:15px; margin-bottom:18px; }
+  .status{
+    display:inline-block;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    padding:2px 8px;
+    border:1px solid var(--alert);
+    color:var(--alert);
+    margin-bottom:14px;
+  }
+  ul.spec{ list-style:none; }
+  ul.spec li{
+    position:relative;
+    padding-left:16px;
+    margin-bottom:9px;
+    font-size:14.5px;
+    color:var(--ink);
+    max-width:680px;
+  }
+  ul.spec li::before{
+    content:"–";
+    position:absolute; left:0; color:var(--ink-faint);
+  }
+  .stack-line{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    color:var(--ink-dim);
+    margin-top:18px;
+    letter-spacing:.02em;
+  }
+
+  /* ---------- signature: live entropy instrument ---------- */
+  .instrument{
+    margin-top:28px;
+    border:1px solid var(--ink);
+    background:var(--paper-raised);
+    padding:22px 24px 24px;
+    max-width:640px;
+  }
+  .instrument .cap{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--ink-dim);
+    margin-bottom:12px;
+  }
+  .instrument input[type=text]{
+    width:100%;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:14px;
+    background:transparent;
+    border:none;
+    border-bottom:1px solid var(--ink-faint);
+    padding:8px 2px;
+    color:var(--ink);
+    outline:none;
+  }
+  .instrument input[type=text]:focus{ border-color:var(--signal); }
+  .instrument input[type=text]::placeholder{ color:var(--ink-faint); }
+  .bins{ display:flex; align-items:flex-end; gap:3px; height:56px; margin:16px 0 10px; }
+  .bins .bar{
+    flex:1; background:var(--ink-faint); min-height:2px;
+    transition:height .12s ease, background .12s ease;
+  }
+  .bins .bar.hot{ background:var(--signal); }
+  .readout{
+    display:flex; justify-content:space-between;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px; color:var(--ink-dim);
+  }
+  .readout .h-val{ color:var(--signal); font-weight:500; }
+
+  /* ---------- signature: live digit-classifier instrument ---------- */
+  .net-instrument{ display:flex; gap:26px; flex-wrap:wrap; align-items:flex-start; }
+  #digitCanvas{
+    width:140px; height:140px;
+    background:#f7f8f4;
+    border:1px solid var(--ink);
+    cursor:crosshair;
+    touch-action:none;
+  }
+  .net-side{ flex:1; min-width:220px; }
+  .probs{ display:flex; align-items:flex-end; gap:4px; height:70px; }
+  .probs .col{ flex:1; display:flex; flex-direction:column; align-items:center; gap:5px; }
+  .probs .bar{
+    width:100%; background:var(--ink-faint); min-height:2px;
+    transition:height .1s ease, background .1s ease;
+  }
+  .probs .bar.hot{ background:var(--signal); }
+  .probs .digit-label{ font-family:'IBM Plex Mono', monospace; font-size:10.5px; color:var(--ink-dim); }
+  .instrument-controls{ display:flex; justify-content:space-between; align-items:center; margin-top:14px; }
+  .clear-btn{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+    background:transparent;
+    border:1px solid var(--ink-faint);
+    color:var(--ink-dim);
+    padding:6px 12px;
+    cursor:pointer;
+  }
+  .clear-btn:hover{ border-color:var(--signal); color:var(--signal); }
+  .disclosure{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--ink-faint);
+    margin-top:14px;
+    max-width:640px;
+  }
+
+  /* ---------- log block (reused, restyled — not a generic terminal) ---------- */
+  .log{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    color:var(--ink-dim);
+    border-left:2px solid var(--line);
+    padding-left:16px;
+    margin:18px 0 6px;
+  }
+  .log .k{ color:var(--ink); }
+  .log .v{ color:var(--signal); }
+
+  /* ---------- two-up ---------- */
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:38px; margin-top:6px; }
+  @media (max-width:640px){ .grid2{ grid-template-columns:1fr; } }
+  .card h3{ font-family:'Newsreader', serif; font-weight:500; font-size:19px; margin-bottom:6px; }
+  .card p{ color:var(--ink-dim); font-size:14px; margin-bottom:8px; }
+  .card a{ font-family:'IBM Plex Mono', monospace; font-size:12px; }
+
+  /* ---------- table ---------- */
+  table{ width:100%; border-collapse:collapse; margin-top:8px; }
+  th{
+    text-align:left; font-family:'IBM Plex Mono', monospace; font-size:10.5px;
+    text-transform:uppercase; letter-spacing:.06em; color:var(--ink-dim);
+    padding:0 10px 10px 0; border-bottom:1px solid var(--ink); font-weight:400;
+  }
+  td{ padding:11px 10px 11px 0; border-bottom:1px solid var(--line); font-size:14px; vertical-align:top; }
+  td.note{ color:var(--ink-dim); font-family:'IBM Plex Mono', monospace; font-size:12px; }
+
+  footer{
+    padding:36px 0 60px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    color:var(--ink-faint);
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ transition:none !important; scroll-behavior:auto !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <div class="masthead">
+    <div class="file-tag"><span>IPR0003546P · PATENT FILED</span><span>REG. 24BIT0239</span></div>
+    <h1>Jaivardhan Singh Chauhan</h1>
+    <div class="sub">Systems, signal, and orbit — built from first principles</div>
+    <div class="contact-row">
+      <span>Udaipur, RJ / Chennai, IN</span>
+      <a href="mailto:jaivardhan22jai@gmail.com">jaivardhan22jai@gmail.com</a>
+      <a href="tel:+916377982610">+91 63779 82610</a>
+      <a href="https://github.com/grimmy22" target="_blank">github.com/grimmy22</a>
+    </div>
+  </div>
+
+  <section id="entropy">
+    <span class="ref">§01 <span class="unit">— cognitive-fatigue estimation</span></span>
+    <div class="status">Patent filed · IPR0003546P</div>
+    <h2>Behavioural Entropy Engine</h2>
+    <p class="lede">A deterministic, model-free engine that estimates cognitive fatigue from
+      inter-keystroke timing alone — no ML model, no stored keystrokes, every number traceable
+      by hand. A kernel-level daemon reads raw keypress events through non-blocking syscalls into
+      a mutex-guarded buffer, then computes Shannon entropy across five temporal bins plus
+      sliding-window mean, variance, entropy rate, and entropy acceleration to classify
+      typing / thinking / idle in real time.</p>
+
+    <div class="instrument">
+      <div class="cap">LIVE INSTRUMENT — type a sentence, watch your own timing entropy</div>
+      <input type="text" id="entropyInput" placeholder="start typing here…" autocomplete="off">
+      <div class="bins" id="bins"></div>
+      <div class="readout">
+        <span>5 bins · inter-keystroke interval, ms</span>
+        <span>H = <span class="h-val" id="hVal">0.00</span> bits</span>
+      </div>
+    </div>
+    <div class="stack-line">C++20 · LINUX KERNEL INPUT SUBSYSTEM · MUTEX-GUARDED BUFFERS · NON-BLOCKING I/O</div>
+  </section>
+
+  <section id="scratch">
+    <span class="ref">§02 <span class="unit">— trained from scratch, 90.7% test accuracy</span></span>
+    <h2>Neural Network from Scratch</h2>
+    <p class="lede">Tensor operations, an autograd engine, and a full module system in C++,
+      with no ML framework — <span class="k" style="color:var(--ink)">Tensor</span>,
+      <span class="k" style="color:var(--ink)">Module</span>,
+      <span class="k" style="color:var(--ink)">Linear</span>,
+      <span class="k" style="color:var(--ink)">ReLU</span>,
+      <span class="k" style="color:var(--ink)">Softmax</span>, and
+      <span class="k" style="color:var(--ink)">SGD</span>, all hand-written. Diagnosed and fixed
+      a topological-ordering bug that was silently corrupting gradients in the backward pass,
+      then reached 90.7% test accuracy on MNIST digit classification.</p>
+
+    <div class="instrument">
+      <div class="cap">LIVE INSTRUMENT — draw a digit, watch it propagate through the network</div>
+      <div class="net-instrument">
+        <canvas id="digitCanvas" width="140" height="140"></canvas>
+        <div class="net-side">
+          <div class="probs" id="probBars"></div>
+          <div class="readout" style="margin-top:8px;">
+            <span>784 → 512 → 512 → 10</span>
+            <span>pred = <span class="h-val" id="predVal">…</span></span>
+          </div>
+        </div>
+      </div>
+      <div class="instrument-controls">
+        <span class="readout" style="border:none;">fc1 → relu → fc2 → relu → fc3</span>
+        <button class="clear-btn" id="clearBtn">clear</button>
+      </div>
+      <div class="disclosure" id="modelDisclosure">Loading the trained checkpoint
+        (models/mnist.nn, ~2.6MB, 670K parameters) — same weights as the C++ evaluation.</div>
+    </div>
+    <a href="https://github.com/grimmy22/MNIST_Neural_network" target="_blank">github.com/grimmy22/MNIST_Neural_network →</a>
+    <div class="stack-line">C++20 · CUSTOM TENSOR / AUTOGRAD ENGINE · LINEAR · RELU · SOFTMAX · SGD</div>
+  </section>
+
+  <section id="orbitwatch">
+    <span class="ref">§03 <span class="unit">— real-time ingestion &amp; visualization</span></span>
+    <h2>OrbitWatch</h2>
+    <p class="lede">A production-style pipeline for tracking data: automated ingestion from
+      external APIs, a custom C++ parser (libsgp4, nlohmann/json) computing derived orbital
+      metrics, and MongoDB persistence behind a paginated REST API built to keep query latency
+      flat as the dataset keeps growing. The frontend adds searchable, infinite-scroll tables and
+      a real-time 3D layer with raycasting for interactive queries.</p>
+
+    <div class="log">
+      <div><span class="k">ingest</span> → parse (libsgp4) → derive metrics → <span class="k">persist</span> (MongoDB)</div>
+      <div style="margin-top:6px"><span class="k">page size</span> <span class="v">100 records</span> · <span class="k">rate-limit handling</span> <span class="v">graceful backoff</span></div>
+      <div style="margin-top:6px"><span class="k">frontend</span> Three.js raycasting · IntersectionObserver infinite scroll</div>
+    </div>
+    <div class="stack-line">C++ · NODE.JS / EXPRESS · MONGODB · THREE.JS</div>
+  </section>
+
+  <section id="auv">
+    <span class="ref">§04 <span class="unit">— underwater multi-robot coordination</span></span>
+    <div class="status" style="border-color:var(--ink-dim); color:var(--ink-dim);">In progress</div>
+    <h2>Multi-AUV Swarm Coordination</h2>
+    <p class="lede">ROS 2 (Jazzy) control nodes for a multi-robot AUV stack running on NVIDIA
+      Isaac Sim, extending the OceanSim plugin's sensor example with a dedicated ROS 2 control
+      mode. A single-robot circular-orbit controller is validated; work is now extending to
+      obstacle-free multi-robot simulation using Reynolds-flocking coordination.</p>
+
+    <div class="log">
+      <div><span class="prompt">$</span> ros2 node list</div>
+      <div>/auv_control</div>
+      <div>/robot_1/dvl_broadcaster · /robot_1/baro_broadcaster</div>
+      <div>/robot_2/dvl_broadcaster <span style="color:var(--ink-faint)">...</span></div>
+    </div>
+    <a href="https://github.com/grimmy22/ro2oceansim" target="_blank">github.com/grimmy22/ro2oceansim →</a>
+    <div class="stack-line">C++ · PYTHON · ROS2 (JAZZY) · NVIDIA ISAAC SIM</div>
+  </section>
+
+  <section id="also">
+    <span class="ref">§05 <span class="unit">— also built</span></span>
+    <div class="grid2">
+      <div class="card">
+        <h3>Orbital Conjunction Analysis</h3>
+        <p>A pairwise risk-screening engine over large propagated state-vector datasets,
+          flagging close-approach events within a time window — an exercise in keeping
+          pairwise screening tractable as the dataset scales.</p>
+        <a href="https://github.com/grimmy22" target="_blank">Repository →</a>
+      </div>
+      <div class="card">
+        <h3>Labs &amp; coursework</h3>
+        <ul class="spec">
+          <li>Discrete Mathematics — graph theory &amp; logic</li>
+          <li>OOPS Lab — object-oriented design</li>
+          <li>Digital Electronics — sequence lock, 74LS76 / 74HC03N breadboard build</li>
+          <li>Web Technologies (BITE304P) — AJAX, AngularJS, ReactJS</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="record">
+    <span class="ref">§06 <span class="unit">— education &amp; record</span></span>
+    <h2>Record</h2>
+    <table>
+      <tr><th>Item</th><th>Detail</th><th>Note</th></tr>
+      <tr><td>B.Tech, Information Technology</td><td class="note">VIT Vellore · 2024–2028</td><td class="note">3rd yr, CGPA 8.91</td></tr>
+      <tr><td>Behavioural Entropy Engine</td><td class="note">IPR0003546P</td><td class="note">patent filed, VIT / IP Dome Global</td></tr>
+      <tr><td>OrbitWatch</td><td class="note">Invention Disclosure Form</td><td class="note">filed at VIT</td></tr>
+      <tr><td>Robotics Research Group</td><td class="note">swarm &amp; underwater multi-robot systems</td><td class="note">contributor, VIT</td></tr>
+    </table>
+  </section>
+
+  <footer>
+    <span>Jaivardhan Singh Chauhan — Udaipur, Rajasthan</span>
+    <a href="https://github.com/grimmy22" target="_blank">github.com/grimmy22</a>
+  </footer>
+</div>
+
+<script>
+  // Live entropy instrument — mirrors the Behavioural Entropy Engine's core computation:
+  // Shannon entropy over binned inter-keystroke intervals.
+  (function(){
+    const input = document.getElementById('entropyInput');
+    const binsEl = document.getElementById('bins');
+    const hVal = document.getElementById('hVal');
+    const NUM_BINS = 5;
+    const EDGES = [0, 90, 160, 260, 420, Infinity]; // ms boundaries, tuned for typing cadence
+    let lastT = null;
+    let counts = new Array(NUM_BINS).fill(0);
+
+    function render(){
+      binsEl.innerHTML = '';
+      const total = counts.reduce((a,b)=>a+b,0);
+      const max = Math.max(1, ...counts);
+      let H = 0;
+      if(total > 0){
+        counts.forEach(c=>{
+          if(c === 0) return;
+          const p = c/total;
+          H -= p * Math.log2(p);
+        });
+      }
+      counts.forEach((c,i)=>{
+        const bar = document.createElement('div');
+        bar.className = 'bar' + (c === max && c > 0 ? ' hot' : '');
+        const h = total ? Math.max(2, (c/max)*56) : 2;
+        bar.style.height = h + 'px';
+        binsEl.appendChild(bar);
+      });
+      hVal.textContent = H.toFixed(2);
+    }
+
+    function binFor(dt){
+      for(let i=0;i<NUM_BINS;i++){
+        if(dt >= EDGES[i] && dt < EDGES[i+1]) return i;
+      }
+      return NUM_BINS - 1;
+    }
+
+    input.addEventListener('keydown', (e)=>{
+      if(e.key.length !== 1 && e.key !== 'Backspace' && e.key !== ' ') return;
+      const now = performance.now();
+      if(lastT !== null){
+        const dt = now - lastT;
+        counts[binFor(dt)]++;
+      }
+      lastT = now;
+      render();
+    });
+
+    render();
+  })();
+
+  // Live digit-classifier instrument — loads the REAL trained checkpoint (models/mnist.nn)
+  // and parses it using the exact binary layout written by serialization.cpp:
+  //   int32 magic (777)
+  //   repeated: uint64 name_len, name bytes, uint64 shape_len, shape_len x uint64 shape,
+  //             uint64 data_len, data_len x float32
+  // Forward pass mirrors neural.cpp's NeuralNetwork::forward exactly: flatten -> linear_1 ->
+  // relu -> linear_2 -> relu -> linear_3 (no activation on the output; softmax below is
+  // added only for the probability display, same as the C++ test() loop's implicit argmax).
+  // Pixel scaling matches dataset.cpp's MNIST::read_mnist, which divides by 255 twice
+  // (convert_to_float already does px/255, then read_mnist divides that result by 255
+  // again) -> effective scale is raw_pixel / 65025, not the more typical / 255.
+  (function(){
+    const canvas = document.getElementById('digitCanvas');
+    if(!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const probEl = document.getElementById('probBars');
+    const predEl = document.getElementById('predVal');
+    const clearBtn = document.getElementById('clearBtn');
+    const disclosureEl = document.getElementById('modelDisclosure');
+    const W = canvas.width, H = canvas.height;
+
+    function resetCanvas(){
+      ctx.fillStyle = '#f7f8f4';
+      ctx.fillRect(0,0,W,H);
+      ctx.strokeStyle = '#161f1c';
+      ctx.lineWidth = 9;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+    }
+    resetCanvas();
+
+    let weights = null; // { 'linear_1.weight': Float32Array, ... }
+    let ready = false;
+
+    async function loadWeights(url){
+      const resp = await fetch(url);
+      if(!resp.ok) throw new Error('fetch failed: ' + resp.status);
+      const buf = await resp.arrayBuffer();
+      const view = new DataView(buf);
+      let offset = 0;
+      const magic = view.getInt32(offset, true); offset += 4;
+      if(magic !== 777) throw new Error('bad magic number: ' + magic);
+      const decoder = new TextDecoder('utf-8');
+      const tensors = {};
+      while(offset < buf.byteLength){
+        const nameLen = Number(view.getBigUint64(offset, true)); offset += 8;
+        const name = decoder.decode(new Uint8Array(buf, offset, nameLen)); offset += nameLen;
+        const shapeLen = Number(view.getBigUint64(offset, true)); offset += 8;
+        const shape = [];
+        for(let i=0;i<shapeLen;i++){ shape.push(Number(view.getBigUint64(offset,true))); offset += 8; }
+        const dataLen = Number(view.getBigUint64(offset, true)); offset += 8;
+        const arr = new Float32Array(dataLen);
+        for(let i=0;i<dataLen;i++){ arr[i] = view.getFloat32(offset, true); offset += 4; }
+        tensors[name] = { shape, data: arr };
+      }
+      return tensors;
+    }
+
+    function relu(v){ return v > 0 ? v : 0; }
+
+    function forward(x){
+      const W1 = weights['linear_1.weight'].data, b1 = weights['linear_1.bias'].data;
+      const W2 = weights['linear_2.weight'].data, b2 = weights['linear_2.bias'].data;
+      const W3 = weights['linear_3.weight'].data, b3 = weights['linear_3.bias'].data;
+      const HID = 512, OUT = 10;
+
+      const h1 = new Float32Array(HID);
+      for(let j=0;j<HID;j++){
+        let s = b1[j];
+        for(let i=0;i<784;i++) s += x[i]*W1[i*HID+j];
+        h1[j] = relu(s);
+      }
+      const h2 = new Float32Array(HID);
+      for(let j=0;j<HID;j++){
+        let s = b2[j];
+        for(let i=0;i<HID;i++) s += h1[i]*W2[i*HID+j];
+        h2[j] = relu(s);
+      }
+      const z = new Float32Array(OUT);
+      for(let k=0;k<OUT;k++){
+        let s = b3[k];
+        for(let i=0;i<HID;i++) s += h2[i]*W3[i*OUT+k];
+        z[k] = s; // raw logits, matches neural.cpp (no activation on linear_3)
+      }
+      const maxZ = Math.max(...z);
+      const exps = Array.from(z, v => Math.exp(v - maxZ));
+      const sum = exps.reduce((a,b)=>a+b, 0);
+      return exps.map(v => v/sum); // softmax, for display only
+    }
+
+    function sampleInput(){
+      const off = document.createElement('canvas');
+      off.width = 28; off.height = 28;
+      const octx = off.getContext('2d');
+      octx.drawImage(canvas, 0, 0, W, H, 0, 0, 28, 28);
+      const data = octx.getImageData(0,0,28,28).data;
+      const x = new Float32Array(784);
+      for(let p=0;p<784;p++){
+        const r = data[p*4], g = data[p*4+1], b = data[p*4+2];
+        const lum = (r+g+b)/3;
+        const raw = 255 - lum; // foreground bright, matches MNIST convention
+        x[p] = raw / 65025; // matches dataset.cpp's double /255.0f (convert_to_float, then /255.0f again)
+      }
+      return x;
+    }
+
+    function renderProbs(probs){
+      probEl.innerHTML = '';
+      const maxP = Math.max(...probs);
+      probs.forEach((p, digit)=>{
+        const col = document.createElement('div');
+        col.className = 'col';
+        const bar = document.createElement('div');
+        bar.className = 'bar' + (p === maxP ? ' hot' : '');
+        bar.style.height = Math.max(2, p*66) + 'px';
+        const label = document.createElement('div');
+        label.className = 'digit-label';
+        label.textContent = digit;
+        col.appendChild(bar);
+        col.appendChild(label);
+        probEl.appendChild(col);
+      });
+      predEl.textContent = probs.indexOf(maxP);
+    }
+
+    function classify(){
+      if(!ready) return;
+      const probs = forward(sampleInput());
+      renderProbs(probs);
+    }
+
+    let drawing = false;
+    function posFromEvent(e){
+      const rect = canvas.getBoundingClientRect();
+      return [(e.clientX-rect.left) * (W/rect.width), (e.clientY-rect.top) * (H/rect.height)];
+    }
+    canvas.addEventListener('pointerdown', (e)=>{
+      drawing = true;
+      const [x,y] = posFromEvent(e);
+      ctx.beginPath();
+      ctx.moveTo(x,y);
+    });
+    canvas.addEventListener('pointermove', (e)=>{
+      if(!drawing) return;
+      const [x,y] = posFromEvent(e);
+      ctx.lineTo(x,y);
+      ctx.stroke();
+    });
+    window.addEventListener('pointerup', ()=>{
+      if(drawing){ drawing = false; classify(); }
+    });
+    clearBtn.addEventListener('click', ()=>{
+      resetCanvas();
+      classify();
+    });
+
+    loadWeights('./mnist.nn').then(t => {
+      weights = t;
+      ready = true;
+      disclosureEl.textContent = 'Running the real trained checkpoint (models/mnist.nn, 670K parameters) — entirely client-side.';
+      classify();
+    }).catch(err => {
+      disclosureEl.textContent = 'Could not load mnist.nn (' + err.message + '). This demo needs to be served over http(s) — GitHub Pages works, opening the file directly may not.';
+      predEl.textContent = 'n/a';
+    });
+  })();
+</script>
+
+</body>
+</html>
