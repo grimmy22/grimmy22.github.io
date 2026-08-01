@@ -579,8 +579,8 @@
       octx.fillRect(0,0,28,28);
       if(maxX >= minX && maxY >= minY){
         const bw = maxX-minX+1, bh = maxY-minY+1;
-        const side = Math.max(bw, bh) * 1.3; // small margin around the stroke
-        const scale = 20/side; // fit into a 20x20 box, MNIST-style
+        const side = Math.max(bw, bh) * 1.05; // tight margin — 1.3 was over-shrinking the digit
+        const scale = 22/side; // fit into a ~22x22 box, closer to real MNIST digit fill
         const destW = bw*scale, destH = bh*scale;
         const destX = (28-destW)/2, destY = (28-destH)/2;
         octx.drawImage(canvas, minX, minY, bw, bh, destX, destY, destW, destH);
